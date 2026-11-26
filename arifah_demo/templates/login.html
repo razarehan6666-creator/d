@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Sign in · Arifah Demo{% endblock %}
+{% block content %}
+<main class="login-layout">
+  <section class="login-card">
+    <div class="brand-mark" aria-label="Arifah Demo">arifah</div>
+    <p class="subheading">A simple social-login interface demonstration</p>
+    <form method="post" action="{{ url_for('login') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <label class="sr-only" for="email">Email address</label>
+      <input id="email" class="field" type="email" value="annie@gmail.com" readonly aria-readonly="true">
+      <label class="sr-only" for="password">Demo password</label>
+      <div class="password-wrap">
+        <input id="password" class="field" type="password" name="password" placeholder="Demo password" required autocomplete="off">
+        <button class="show-button" type="button" id="togglePassword">Show</button>
+      </div>
+      <button class="primary-button" type="submit">Log in to demo</button>
+    </form>
+    <div class="or"><span>DEMO ACCESS</span></div>
+    <p class="small-note">Use fictional test credentials only. This page does not connect to Instagram or Google.</p>
+    <p class="small-note"><a href="{{ url_for('admin_login') }}">Administrator sign in</a></p>
+  </section>
+  <section class="info-card">
+    <div class="phone-art">
+      <div class="phone-top"></div>
+      <div class="phone-screen">
+        <div class="mini-logo">arifah</div>
+        <div class="mini-photo"></div>
+        <div class="mini-lines"><i></i><i></i><i></i></div>
+        <div class="mini-nav"><b></b><b></b><b></b></div>
+      </div>
+    </div>
+    <h2>A familiar, simple layout.</h2>
+    <p>This independent project is for learning about web forms, sessions and secure authentication.</p>
+  </section>
+</main>
+<script>
+  const toggle = document.getElementById("togglePassword");
+  const field = document.getElementById("password");
+  toggle.addEventListener("click", () => {
+    const reveal = field.type === "password";
+    field.type = reveal ? "text" : "password";
+    toggle.textContent = reveal ? "Hide" : "Show";
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Demo signed in{% endblock %}
+{% block content %}
+<main class="center-wrap">
+  <section class="panel">
+    <div class="brand-mark small-brand">arifah</div>
+    <h1>Demo sign-in successful</h1>
+    <p>You are signed in to this local demonstration as <strong>{{ email }}</strong>.</p>
+    <p class="small-note">No Instagram or Google account was accessed.</p>
+    <form method="post" action="{{ url_for('logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="primary-button" type="submit">Log out</button>
+    </form>
+  </section>
+</main>
+{% endblock %}

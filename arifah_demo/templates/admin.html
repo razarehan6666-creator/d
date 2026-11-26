@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Admin dashboard{% endblock %}
+{% block content %}
+<main class="dashboard">
+  <header class="dash-header">
+    <div><span class="eyebrow">ARIFAH DEMO</span><h1>Administrator dashboard</h1></div>
+    <form method="post" action="{{ url_for('admin_logout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button class="secondary-button" type="submit">Sign out</button>
+    </form>
+  </header>
+  <section class="panel">
+    <h2>Demo accounts</h2>
+    <p class="small-note">Passwords are never displayed or stored in readable form.</p>
+    {% if users %}
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>Email</th><th>Created (UTC)</th><th>Action</th></tr></thead><tbody>
+      {% for user in users %}
+      <tr><td>{{ user.id }}</td><td>{{ user.email }}</td><td>{{ user.created_at }}</td><td>
+        <form method="post" action="{{ url_for('delete_user', user_id=user.id) }}" onsubmit="return confirm('Delete this demo account?')">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button class="danger-button" type="submit">Delete</button>
+        </form>
+      </td></tr>
+      {% endfor %}
+    </tbody></table></div>
+    {% else %}<p>No demo accounts.</p>{% endif %}
+  </section>
+  <section class="panel">
+    <div class="section-heading"><div><h2>Recent login activity</h2><p class="small-note">Latest 100 events. Submitted passwords are not recorded.</p></div>
+      <form method="post" action="{{ url_for('clear_events') }}" onsubmit="return confirm('Clear all login activity?')">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button class="danger-button" type="submit">Clear activity</button>
+      </form>
+    </div>
+    {% if events %}
+    <div class="table-wrap"><table><thead><tr><th>Email</th><th>Result</th><th>Time (UTC)</th><th>IP hint</th></tr></thead><tbody>
+      {% for event in events %}
+      <tr><td>{{ event.email }}</td><td><span class="status {{ 'ok' if event.success else 'failed' }}">{{ 'Success' if event.success else 'Failed' }}</span></td><td>{{ event.created_at }}</td><td>{{ event.ip_hint or '—' }}</td></tr>
+      {% endfor %}
+    </tbody></table></div>
+    {% else %}<p>No login events yet.</p>{% endif %}
+  </section>
+</main>
+{% endblock %}
